@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import carRoutes from './routes/carRoutes.js';
 import bookingRoutes from './routes/bookingsRoutes.js';
+import authMiddleware from './middleware/authMiddleware.js';
 
 
 dotenv.config();
@@ -29,10 +30,12 @@ app.use('/api/bookings', bookingRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-import authenticateUser from "./middleware/authMiddleware.js";
 
 
 
-app.get("/api/protected", authenticateUser, (req, res) => {
-    res.json({ message: "You have accessed a protected route!", user: req.user });
+app.get("/api/protected", authMiddleware, (req, res) => {
+    res.json({
+        message: "You have accessed a protected route!",
+        user: req.user,  // this contains info like user id, email from the token
+    });
 });
