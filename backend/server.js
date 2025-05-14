@@ -11,6 +11,7 @@ import dummyPaymentRoutes from './routes/dummyPaymentRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import verifyRoutes from './routes/verifyRoutes.js';
 //import {errorHandler} from './middleware/errorHandler.js';
+import { parse } from 'url';
 
 dotenv.config();
 
@@ -48,3 +49,13 @@ app.get("/api/protected", authMiddleware, (req, res) => {
         user: req.user,  // this contains info like user id, email from the token
     });
 });
+
+
+// Main handler for serverless
+export default async function handler(req, res) {
+    const parsedUrl = parse(req.url, true);
+    req.query = parsedUrl.query;
+    req.path = parsedUrl.pathname;
+
+    return app(req, res);
+}
