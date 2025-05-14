@@ -81,6 +81,9 @@ wheel_share_backend/
 - Fields: `user`, `car`, `startDate`, `endDate`,
 - References both `User` and `Car` models.
 
+### Review Model (`model/review.js`)
+- Fields: `renterId` , `carId` , `rating`, `comment`,
+
 ## API Routes Explanation
 
 ### User Routes (`/api/users`)
@@ -96,314 +99,531 @@ wheel_share_backend/
 - `POST /`: Create a new booking
 - `DELETE /:id`: Cancel a booking
 
+### Payemnt Routes (`/api/dummypayment`)
+- `POST /`: Do payment using stripes dependence API
+
+### Review Routes (`/api/review`)
+- `POST /`: Add a review
+- `GET /:car_Id`: Get all reviews for a specific car
+
+### Verify Routes (`/api/verify`)
+- `POST`: Verify Pan
+
 ## Postman Collection (JSON)
 
 ```json
 {
-  "info": {
-    "_postman_id": "d8c033c6-0018-4f6e-9cde-01c18d3bfd33",
-    "name": "WheelShare",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "42937220"
-  },
-  "item": [
-    {
-      "name": "http://localhost:5000/api/bookings",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjE2Nzg5M2E0YjIxMDIwNTYyODI4ZCIsImlhdCI6MTc0NzAyMDEzMywiZXhwIjoxNzQ3MTA2NTMzfQ.vkU9CisFEhjHfIumx-ovvD0FHRk9rJe6dzIWTw_g-y4",
-              "type": "string"
+   "info": {
+      "_postman_id": "ef5d3c8b-2efe-42ff-820a-46ee240c7c59",
+      "name": "WeelShare API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "_exporter_id": "42937220"
+   },
+   "item": [
+      {
+         "name": "Register User",
+         "request": {
+            "method": "POST",
+            "header": [
+               {
+                  "key": "Content-Type",
+                  "value": "application/json"
+               }
+            ],
+            "body": {
+               "mode": "raw",
+               "raw": "{\n  \"name\": \"Priya Verma\",\n  \"email\": \"priya@example.com\",\n  \"phone\": \"9876541230\",\n  \"password\": \"testpass123\",\n  \"role\": \"renter\"\n}\n"
+            },
+            "url": {
+               "raw": "http://localhost:5000/api/users/register",
+               "protocol": "http",
+               "host": [
+                  "localhost"
+               ],
+               "port": "5000",
+               "path": [
+                  "api",
+                  "users",
+                  "register"
+               ]
             }
-          ]
-        },
-        "method": "GET",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjE2Nzg5M2E0YjIxMDIwNTYyODI4ZCIsImlhdCI6MTc0NzAyMDEzMywiZXhwIjoxNzQ3MTA2NTMzfQ.vkU9CisFEhjHfIumx-ovvD0FHRk9rJe6dzIWTw_g-y4",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:5000/api/protected",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "api",
-            "protected"
-          ]
-        }
+         },
+         "response": []
       },
-      "response": []
-    },
-    {
-      "name": "http://localhost:5000/",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:5000/api/bookings",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "api",
-            "bookings"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "http://localhost:5000/api/cars/add",
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjE2Nzg5M2E0YjIxMDIwNTYyODI4ZCIsImlhdCI6MTc0NzAyMTEwMywiZXhwIjoxNzQ3MTA3NTAzfQ.UoAb4scsrDtezeUCRMALkdC2QJncGcwqcf3O-PQSZOg",
-              "type": "string"
+      {
+         "name": "Login User",
+         "request": {
+            "method": "POST",
+            "header": [
+               {
+                  "key": "Content-Type",
+                  "value": "application/json"
+               },
+               {
+                  "key": "Authorization",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjQwYzEyNTcyOWJhNDJhNjI1NWY0YyIsImlhdCI6MTc0NzI0NzU0OCwiZXhwIjoxNzQ3MzMzOTQ4fQ.U-2L-mqZVTM-38yK_7jCKwF0dL6yx_Ettnw1gNaMLnw",
+                  "type": "text",
+                  "disabled": true
+               }
+            ],
+            "body": {
+               "mode": "raw",
+               "raw": "{\n  \"email\": \"rahul@example.com\",\n  \"password\": \"testpass123\"\n}\n"
+            },
+            "url": {
+               "raw": "http://localhost:5000/api/users/login",
+               "protocol": "http",
+               "host": [
+                  "localhost"
+               ],
+               "port": "5000",
+               "path": [
+                  "api",
+                  "users",
+                  "login"
+               ]
             }
-          ]
-        },
-        "method": "POST",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjE2Nzg5M2E0YjIxMDIwNTYyODI4ZCIsImlhdCI6MTc0NzAyMTEwMywiZXhwIjoxNzQ3MTA3NTAzfQ.UoAb4scsrDtezeUCRMALkdC2QJncGcwqcf3O-PQSZOg",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"model\": \"Toyota Corolla\",\r\n    \"year\": 2020,\r\n    \"availability\": \"Available\",\r\n    \"price\": 100,\r\n    \"location\": \"New York\"\r\n}\r\n",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:5000/api/cars/add",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "api",
-            "cars",
-            "add"
-          ]
-        }
+         },
+         "response": []
       },
-      "response": []
-    },
-    {
-      "name": "http://localhost:5000/api/cars/add",
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjE2Nzg5M2E0YjIxMDIwNTYyODI4ZCIsImlhdCI6MTc0NzAyMTg1NSwiZXhwIjoxNzQ3MTA4MjU1fQ.tST0q0Nk-GKhLShZTirHXr3akkL6DmDNDowrqswHHfg",
-              "type": "string"
+      {
+         "name": "Add Car",
+         "request": {
+            "auth": {
+               "type": "bearer",
+               "bearer": [
+                  {
+                     "key": "token",
+                     "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjUwOTMyMjM3ZjJkNjdlNmJhODcxZiIsImlhdCI6MTc0NzI1NzgxMCwiZXhwIjoxNzQ3MzQ0MjEwfQ.iHCQVpEq2NwoOE0lzHI63GEXcGoCC0fhkxjq8y6edQA",
+                     "type": "string"
+                  }
+               ]
+            },
+            "method": "POST",
+            "header": [
+               {
+                  "key": "Content-Type",
+                  "value": "application/json"
+               },
+               {
+                  "key": "Authorization",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjRlMzkxNTA0MWFmNWQ0YTYxNDU0ZiIsImlhdCI6MTc0NzI0ODA3NSwiZXhwIjoxNzQ3MzM0NDc1fQ.4CcweOblzkHUIWPQ4sGI8rnYP53zdtW6Vgms2Y03krU"
+               }
+            ],
+            "body": {
+               "mode": "raw",
+               "raw": "{\n  \"model\": \"Hyundai Creta\",\n  \"year\": 2022,\n  \"price\": 2000,\n  \"location\": \"Mumbai\",\n  \"availability\": [\n    {\n      \"start\": \"2025-06-01\",\n      \"end\": \"2025-06-10\"\n    },\n    {\n      \"start\": \"2025-06-15\",\n      \"end\": \"2025-06-20\"\n    }\n  ]\n}\n"
+            },
+            "url": {
+               "raw": "http://localhost:5000/api/cars/add",
+               "protocol": "http",
+               "host": [
+                  "localhost"
+               ],
+               "port": "5000",
+               "path": [
+                  "api",
+                  "cars",
+                  "add"
+               ]
             }
-          ]
-        },
-        "method": "POST",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjE2Nzg5M2E0YjIxMDIwNTYyODI4ZCIsImlhdCI6MTc0NzAyMTg1NSwiZXhwIjoxNzQ3MTA4MjU1fQ.tST0q0Nk-GKhLShZTirHXr3akkL6DmDNDowrqswHHfg",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"model\": \"Honda Civic\",\r\n  \"year\": 2022,\r\n  \"availability\": true,\r\n  \"price\": 60,\r\n  \"location\": \"Bangalore\",\r\n  \"ownerId\": \"68215cdd84cf5423a46484fe\"\r\n}\r\n",
-          "options": {
-            "raw": {
-              "language": "json"
+         },
+         "response": []
+      },
+      {
+         "name": "only by location",
+         "request": {
+            "auth": {
+               "type": "bearer",
+               "bearer": [
+                  {
+                     "key": "token",
+                     "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjRlNjJmNTA0MWFmNWQ0YTYxNDU1OCIsImlhdCI6MTc0NzI0ODcyNCwiZXhwIjoxNzQ3MzM1MTI0fQ.JWnvk6n3WVSHUY53A8BlXqnQCMLKuzd4bOdvy0vimkg",
+                     "type": "string"
+                  }
+               ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+               "raw": "http://localhost:5000/api/cars?location=Mumbai",
+               "protocol": "http",
+               "host": [
+                  "localhost"
+               ],
+               "port": "5000",
+               "path": [
+                  "api",
+                  "cars"
+               ],
+               "query": [
+                  {
+                     "key": "location",
+                     "value": "Mumbai"
+                  }
+               ]
             }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:5000/api/cars/add",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "api",
-            "cars",
-            "add"
-          ]
-        }
+         },
+         "response": []
       },
-      "response": []
-    },
-    {
-      "name": "http://localhost:5000/api/bookings",
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjE2Nzg5M2E0YjIxMDIwNTYyODI4ZCIsImlhdCI6MTc0NzAyMTg1NSwiZXhwIjoxNzQ3MTA4MjU1fQ.tST0q0Nk-GKhLShZTirHXr3akkL6DmDNDowrqswHHfg",
-              "type": "string"
+      {
+         "name": "Car Availability",
+         "protocolProfileBehavior": {
+            "disableBodyPruning": true
+         },
+         "request": {
+            "auth": {
+               "type": "bearer",
+               "bearer": [
+                  {
+                     "key": "token",
+                     "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjRlMzkxNTA0MWFmNWQ0YTYxNDU0ZiIsImlhdCI6MTc0NzI0ODA3NSwiZXhwIjoxNzQ3MzM0NDc1fQ.4CcweOblzkHUIWPQ4sGI8rnYP53zdtW6Vgms2Y03krU",
+                     "type": "string"
+                  }
+               ]
+            },
+            "method": "GET",
+            "header": [
+               {
+                  "key": "Authorization",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjRlMzkxNTA0MWFmNWQ0YTYxNDU0ZiIsImlhdCI6MTc0NzI0ODA3NSwiZXhwIjoxNzQ3MzM0NDc1fQ.4CcweOblzkHUIWPQ4sGI8rnYP53zdtW6Vgms2Y03krU",
+                  "type": "text"
+               }
+            ],
+            "body": {
+               "mode": "raw",
+               "raw": "",
+               "options": {
+                  "raw": {
+                     "language": "json"
+                  }
+               }
+            },
+            "url": {
+               "raw": "http://localhost:5000/api/cars?location=Mumbai&startDate=2025-06-01&endDate=2025-06-05",
+               "protocol": "http",
+               "host": [
+                  "localhost"
+               ],
+               "port": "5000",
+               "path": [
+                  "api",
+                  "cars"
+               ],
+               "query": [
+                  {
+                     "key": "location",
+                     "value": "Mumbai"
+                  },
+                  {
+                     "key": "startDate",
+                     "value": "2025-06-01"
+                  },
+                  {
+                     "key": "endDate",
+                     "value": "2025-06-05"
+                  }
+               ]
             }
-          ]
-        },
-        "method": "POST",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjE2Nzg5M2E0YjIxMDIwNTYyODI4ZCIsImlhdCI6MTc0NzAyMTg1NSwiZXhwIjoxNzQ3MTA4MjU1fQ.tST0q0Nk-GKhLShZTirHXr3akkL6DmDNDowrqswHHfg",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"renterId\": \"682182577d9b9120629556e6\",\r\n  \"carId\": \"6821819e7d9b9120629556e4\",\r\n  \"startDate\": \"2025-05-15T00:00:00.000Z\",\r\n  \"endDate\": \"2025-05-17T00:00:00.000Z\"\r\n}\r\n",
-          "options": {
-            "raw": {
-              "language": "json"
+         },
+         "response": []
+      },
+      {
+         "name": "Create Booking",
+         "request": {
+            "auth": {
+               "type": "bearer",
+               "bearer": [
+                  {
+                     "key": "token",
+                     "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjUwOTU0MjM3ZjJkNjdlNmJhODcyMiIsImlhdCI6MTc0NzI1NzcyMCwiZXhwIjoxNzQ3MzQ0MTIwfQ.oEM2v055qaoO_3HI4SlEWcineeY-4MQxg-PraGGAZMk",
+                     "type": "string"
+                  }
+               ]
+            },
+            "method": "POST",
+            "header": [
+               {
+                  "key": "Content-Type",
+                  "value": "application/json"
+               },
+               {
+                  "key": "Authorization",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjUwOTU0MjM3ZjJkNjdlNmJhODcyMiIsImlhdCI6MTc0NzI1NzcyMCwiZXhwIjoxNzQ3MzQ0MTIwfQ.oEM2v055qaoO_3HI4SlEWcineeY-4MQxg-PraGGAZMk"
+               }
+            ],
+            "body": {
+               "mode": "raw",
+               "raw": "{\n  \"carId\": \"68250a14237f2d67e6ba8726\",\n  \"startDate\": \"2025-06-02\",\n  \"endDate\": \"2025-06-08\"\n}\n"
+            },
+            "url": {
+               "raw": "http://localhost:5000/api/bookings",
+               "protocol": "http",
+               "host": [
+                  "localhost"
+               ],
+               "port": "5000",
+               "path": [
+                  "api",
+                  "bookings"
+               ]
             }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:5000/api/bookings",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "api",
-            "bookings"
-          ]
-        }
+         },
+         "response": []
       },
-      "response": []
-    },
-    {
-      "name": "http://localhost:5000/api/bookings",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:5000/api/bookings",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "api",
-            "bookings"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "http://localhost:5000/api/bookings?carId=6821819e7d9b9120629556e4",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:5000/api/bookings?carId=6821819e7d9b9120629556e4",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "api",
-            "bookings"
-          ],
-          "query": [
-            {
-              "key": "carId",
-              "value": "6821819e7d9b9120629556e4"
+      {
+         "name": "Pan",
+         "request": {
+            "auth": {
+               "type": "bearer",
+               "bearer": [
+                  {
+                     "key": "token",
+                     "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjUwOTU0MjM3ZjJkNjdlNmJhODcyMiIsImlhdCI6MTc0NzI1NzcyMCwiZXhwIjoxNzQ3MzQ0MTIwfQ.oEM2v055qaoO_3HI4SlEWcineeY-4MQxg-PraGGAZMk",
+                     "type": "string"
+                  }
+               ]
+            },
+            "method": "POST",
+            "header": [
+               {
+                  "key": "Authorization",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjRlNjJmNTA0MWFmNWQ0YTYxNDU1OCIsImlhdCI6MTc0NzI0ODcyNCwiZXhwIjoxNzQ3MzM1MTI0fQ.JWnvk6n3WVSHUY53A8BlXqnQCMLKuzd4bOdvy0vimkg",
+                  "type": "text"
+               }
+            ],
+            "body": {
+               "mode": "raw",
+               "raw": "{\r\n  \"panNumber\": \"ABCDE1234F\",\r\n  \"fullName\": \"Priya Verma\"\r\n}\r\n",
+               "options": {
+                  "raw": {
+                     "language": "json"
+                  }
+               }
+            },
+            "url": {
+               "raw": "http://localhost:5000/api/verify/pan",
+               "protocol": "http",
+               "host": [
+                  "localhost"
+               ],
+               "port": "5000",
+               "path": [
+                  "api",
+                  "verify",
+                  "pan"
+               ]
             }
-          ]
-        }
+         },
+         "response": []
       },
-      "response": []
-    },
-    {
-      "name": "http://localhost:5000/api/bookings?renterId=682182577d9b9120629556e6",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:5000/api/bookings?renterId=682182577d9b9120629556e6",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "api",
-            "bookings"
-          ],
-          "query": [
-            {
-              "key": "renterId",
-              "value": "682182577d9b9120629556e6"
+      {
+         "name": "Dummy-payments",
+         "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+               "mode": "raw",
+               "raw": "{\r\n  \"userId\": \"68250954237f2d67e6ba8722\",\r\n  \"amount\": 2500,\r\n  \"currency\": \"INR\"\r\n}\r\n",
+               "options": {
+                  "raw": {
+                     "language": "json"
+                  }
+               }
+            },
+            "url": {
+               "raw": "http://localhost:5000/api/dummy-payments",
+               "protocol": "http",
+               "host": [
+                  "localhost"
+               ],
+               "port": "5000",
+               "path": [
+                  "api",
+                  "dummy-payments"
+               ]
             }
-          ]
-        }
+         },
+         "response": []
       },
-      "response": []
-    },
-    {
-      "name": "http://localhost:5000/api/reviews",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:5000/api/reviews",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "5000",
-          "path": [
-            "api",
-            "reviews"
-          ]
-        }
+      {
+         "name": "Cancel booking",
+         "request": {
+            "auth": {
+               "type": "bearer",
+               "bearer": [
+                  {
+                     "key": "token",
+                     "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjUwOTU0MjM3ZjJkNjdlNmJhODcyMiIsImlhdCI6MTc0NzI1NzcyMCwiZXhwIjoxNzQ3MzQ0MTIwfQ.oEM2v055qaoO_3HI4SlEWcineeY-4MQxg-PraGGAZMk",
+                     "type": "string"
+                  }
+               ]
+            },
+            "method": "DELETE",
+            "header": [
+               {
+                  "key": "Authorization",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjUwOTU0MjM3ZjJkNjdlNmJhODcyMiIsImlhdCI6MTc0NzI1NzcyMCwiZXhwIjoxNzQ3MzQ0MTIwfQ.oEM2v055qaoO_3HI4SlEWcineeY-4MQxg-PraGGAZMk",
+                  "type": "text"
+               }
+            ],
+            "url": {
+               "raw": "http://localhost:5000/api/bookings/68250dbd237f2d67e6ba8760",
+               "protocol": "http",
+               "host": [
+                  "localhost"
+               ],
+               "port": "5000",
+               "path": [
+                  "api",
+                  "bookings",
+                  "68250dbd237f2d67e6ba8760"
+               ]
+            }
+         },
+         "response": []
       },
-      "response": []
-    }
-  ]
+      {
+         "name": "Write Review",
+         "request": {
+            "auth": {
+               "type": "bearer",
+               "bearer": [
+                  {
+                     "key": "token",
+                     "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjUwOTU0MjM3ZjJkNjdlNmJhODcyMiIsImlhdCI6MTc0NzI1NzcyMCwiZXhwIjoxNzQ3MzQ0MTIwfQ.oEM2v055qaoO_3HI4SlEWcineeY-4MQxg-PraGGAZMk",
+                     "type": "string"
+                  }
+               ]
+            },
+            "method": "POST",
+            "header": [
+               {
+                  "key": "Authorization",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjRlNjJmNTA0MWFmNWQ0YTYxNDU1OCIsImlhdCI6MTc0NzI0ODcyNCwiZXhwIjoxNzQ3MzM1MTI0fQ.JWnvk6n3WVSHUY53A8BlXqnQCMLKuzd4bOdvy0vimkg",
+                  "type": "text"
+               },
+               {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+               }
+            ],
+            "body": {
+               "mode": "raw",
+               "raw": "{\r\n  \"carId\": \"68250a14237f2d67e6ba8726\",\r\n  \"rating\": 5,\r\n  \"comment\": \"Amazing experience! Smooth ride.\"\r\n}\r\n\r\n"
+            },
+            "url": {
+               "raw": "http://localhost:5000/api/reviews",
+               "protocol": "http",
+               "host": [
+                  "localhost"
+               ],
+               "port": "5000",
+               "path": [
+                  "api",
+                  "reviews"
+               ]
+            }
+         },
+         "response": []
+      },
+      {
+         "name": "Delete User",
+         "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+               "mode": "raw",
+               "raw": "",
+               "options": {
+                  "raw": {
+                     "language": "json"
+                  }
+               }
+            },
+            "url": {
+               "raw": "http://localhost:5000/api/users/6824dac9c8521d941c3e65b7",
+               "protocol": "http",
+               "host": [
+                  "localhost"
+               ],
+               "port": "5000",
+               "path": [
+                  "api",
+                  "users",
+                  "6824dac9c8521d941c3e65b7"
+               ]
+            }
+         },
+         "response": []
+      },
+      {
+         "name": "Renter",
+         "request": {
+            "auth": {
+               "type": "bearer",
+               "bearer": [
+                  {
+                     "key": "token",
+                     "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjRlNjJmNTA0MWFmNWQ0YTYxNDU1OCIsImlhdCI6MTc0NzI0OTcwMCwiZXhwIjoxNzQ3MzM2MTAwfQ.GcGs3gWXgLGM2JCjF0RSTooMo-zCc4cVCPCuIFtexIA",
+                     "type": "string"
+                  }
+               ]
+            },
+            "method": "POST",
+            "header": [
+               {
+                  "key": "Authorization",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjRlNjJmNTA0MWFmNWQ0YTYxNDU1OCIsImlhdCI6MTc0NzI0OTcwMCwiZXhwIjoxNzQ3MzM2MTAwfQ.GcGs3gWXgLGM2JCjF0RSTooMo-zCc4cVCPCuIFtexIA",
+                  "type": "text"
+               }
+            ],
+            "body": {
+               "mode": "raw",
+               "raw": "{\r\n  \"renterId\": \"6824e62f5041af5d4a614558\",\r\n  \"carId\": \"6824e4945041af5d4a614552\",\r\n  \"startDate\": \"2025-05-20T00:00:00.000Z\",\r\n  \"endDate\": \"2025-05-22T00:00:00.000Z\"\r\n}\r\n",
+               "options": {
+                  "raw": {
+                     "language": "json"
+                  }
+               }
+            },
+            "url": {
+               "raw": "http://localhost:5000/api/bookings",
+               "protocol": "http",
+               "host": [
+                  "localhost"
+               ],
+               "port": "5000",
+               "path": [
+                  "api",
+                  "bookings"
+               ]
+            }
+         },
+         "response": []
+      },
+      {
+         "name": "Get Review",
+         "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+               "raw": "http://localhost:5000/api/reviews/68250a14237f2d67e6ba8726",
+               "protocol": "http",
+               "host": [
+                  "localhost"
+               ],
+               "port": "5000",
+               "path": [
+                  "api",
+                  "reviews",
+                  "68250a14237f2d67e6ba8726"
+               ]
+            }
+         },
+         "response": []
+      }
+   ]
 }
 ```
